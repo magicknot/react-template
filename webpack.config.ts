@@ -3,13 +3,18 @@ import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin'
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
+
+interface ConfigurationWithDevServer extends Configuration {
+  devServer?: WebpackDevServerConfiguration;
+}
 
 interface Environment {
   production: boolean
   development: boolean
 }
 
-const webpackConfig = (env: Environment): Configuration => ({
+const webpackConfig = (env: Environment): ConfigurationWithDevServer => ({
   entry: './src/index.tsx',
   ...(env.production || !env.development ? {} : { devtool: 'eval-source-map' }),
   resolve: {
@@ -31,6 +36,11 @@ const webpackConfig = (env: Environment): Configuration => ({
         exclude: /dist/
       }
     ]
+  },
+  devServer: {
+    proxy: {
+      '/api': 'http://localhost:3000'
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
