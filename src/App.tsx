@@ -1,17 +1,10 @@
 import { FC } from 'react'
+import { ThemeProvider, CssBaseline } from '@mui/material'
 import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom'
+import theme from './theme'
+import Layout from 'components/Layout'
 
-const AppRoutes = () => <Routes>
-    <Route path="/" element={<Layout />}>
-    <Route index element={<Home />} />
-    <Route path="about" element={<About />} />
-    <Route path="publications" element={<Publications />} />
-    <Route path="workflows" element={<WorkFlows />} />
-    <Route path="*" element={<NoMatch />} />
-    </Route>
-</Routes>
-
-const Layout = () => (
+const LinkMenu = () => (
       <div>
         <nav>
           <ul>
@@ -50,6 +43,21 @@ const NoMatch = () => (
       </div>
 )
 
-const App: FC = () => <BrowserRouter><AppRoutes /></BrowserRouter>
+const AppRoutes = () => <Routes>
+    <Route path="/" element={<Layout><LinkMenu/></Layout> }>
+    <Route index element={<Home />} />
+    <Route path="about" element={<About />} />
+    <Route path="publications" element={<Publications />} />
+    <Route path="workflows" element={<WorkFlows />} />
+    <Route path="*" element={<NoMatch />} />
+    </Route>
+</Routes>
+
+const App: FC = () => <ThemeProvider theme={theme}>
+    <CssBaseline />
+        <BrowserRouter>
+            <AppRoutes/>
+        </BrowserRouter>
+    </ThemeProvider>
 
 export default App
