@@ -23,7 +23,8 @@ const webpackConfig = (env: Environment): ConfigurationWithDevServer => ({
   },
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'build.js'
+    filename: 'build.js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -40,7 +41,8 @@ const webpackConfig = (env: Environment): ConfigurationWithDevServer => ({
   devServer: {
     proxy: {
       '/api': 'http://localhost:3000'
-    }
+    },
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
